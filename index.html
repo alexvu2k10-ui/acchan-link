@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACCHAN.VN</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAwFBMVEX9/fgAAADMqEH989L5/f/yx025ljXju0jatEXJpDvn5+m3trX57MjX19bBnDaamZiop6bJyMj09vuniTT78dH901SPdi3YvG17e3r57M368tH58NSMjIuEayfdwHDM5f//AAD/v3///6r38dpoVSH17N1BNRV7ZSdsa2qdgTLBwL/gwm7424/76Lf77cn58dkHBgNeTB1+ZR7ZsDrAv73e3+Hg39/27tb579n17OMAAAAAAAAAAAAAAAAAAAAAAABiH02lAAAAQHRSTlP9AP73B/7+/v7+/f71/v7+/v4n/83+//7/jo6i///+CgEEA2D/Nv/////+/v7+zl///////v79X2A3AAAAAAAAXf4FhwAAAklJREFUeNpdUwdy4zAMhECxU6RkqiUuaU5v18v/P3YAZWd80YyLuCjEYheq8tTX9LlZ90GE0K9v6qq6rhcEFryqVucCPh5xviqHx4C6uljgpvPeN66EXCwRUPBVD+BcapqUNrPfpI5C+lWJAMZvKd2n5DvgZPDt7LnILUcA5xd80/BhCNyr80BvgmtAXdd9yQIIE0YVI06BbrOhNj2BcFWdlQyAKX+X0mgprZrA/UjU7qy6gktq4KinQIXaUglELSMKeHpw1OQSuMBM0ZglQcaOFKYGi9C0nktAHaBLDUxW3htjDRoTjVFDnCiigVDDO08AQcloRpSoFHKlOCjhWrrnO6zpBh0V0GgwK2OlVhrpPmoH7QwE04zELUqro1RR8xRcTeVM3NKkEJi7YCU1R8K01AMV0yZvy3YC0I+AEE2OqLSme4x7aU3ej/GACXiVIqgxWw6QFof93ddxfJQqCPnKySBeQHwzWmuUg9Q5b79skf5HAS8M90UhedzmUT0atFsl76gHDVuAnuaAtqUxaUZl+I4y3yNabSdgHtbwRyxEDTxIIUrzUugK0DUgfjPVbn6CibjTTDXSF1P9DF37i6ku2ybW0Q6Rl2WNtpGX5TbLsnjdkFpad5TEsf1Yd5ugrLsIpmEp75SVUhsWzDO41h8EQ6p6I0knihA7KqAs7gT8TJ5E+caSO4gWmrl1LFpBL84nHnERLcv+bzmcyQ8kfNe0qWXzHGV/NE7JeyBnscD+M86J9SjdHd15Yr2jeT/cKz6b99T+4pP9/wGBRSRqswZTpgAAAABJRU5ErkJggg==">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3f5f8; }
+  iframe { display: block; width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body>
+<!-- Trang trung chuyển link chia sẻ của cổng ACCHAN.VN:
+     link.acchan.vn/?f=<thư mục> | ?d=<tài liệu> | ?m=<mục menu> | ?g=<nhóm> → mở cổng (Apps Script) đúng chỗ.
+     Cổng gửi lại vị trí đang xem để thanh địa chỉ đổi theo trang. -->
+<iframe id="app" title="ACCHAN.VN" allow="clipboard-write; fullscreen; autoplay"></iframe>
+<script>
+(function () {
+  var EXEC = 'https://script.google.com/macros/s/AKfycbyVpvxnNpw5nRJBaEEU6_BtVF-HKoxUv39V5v3QoUC2tfFyN5lz6zpJFPbf2ZdOL62m/exec';
+  var KEYS = /^[fdmg]$/;
+  function pick(src) {
+    var out = new URLSearchParams();
+    src.forEach(function (v, k) { if (KEYS.test(k) && v && !out.has(k)) out.set(k, v); });
+    return out.toString();
+  }
+  var q = pick(new URLSearchParams(location.search));
+  document.getElementById('app').src = EXEC + (q ? '?' + q : '');
+  window.addEventListener('message', function (e) {
+    if (!/^https:\/\/([a-z0-9-]+\.)*googleusercontent\.com$/.test(e.origin) && e.origin !== 'https://script.google.com') return;
+    var d = e.data;
+    if (!d || d.type !== 'acchan-route') return;
+    var p = new URLSearchParams();
+    Object.keys(d.params || {}).forEach(function (k) { p.set(k, String(d.params[k])); });
+    var s = pick(p);
+    try { history.replaceState(null, '', location.pathname + (s ? '?' + s : '')); } catch (x) {}
+    document.title = d.title ? d.title + ' – ACCHAN.VN' : 'ACCHAN.VN';
+  });
+})();
+</script>
+</body>
+</html>
